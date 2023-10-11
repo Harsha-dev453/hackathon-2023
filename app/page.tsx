@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import DropDown, { VibeType } from "../components/DropDown";
 import DropDownMark, { MarkType } from "../components/DropDownMarkTypes";
@@ -40,7 +40,16 @@ export default function Page() {
     setBio(input);
     handleSubmit(e);
   };
+  useEffect(() => {
+    const ele = document.getElementById('recommended_discount_id');
+    if (ele) {
+      ele.innerHTML = "Recommended Discount %:";
+    }
+  }, []);
 
+  // async function getRecommendedDiscount(){}
+
+  
   const lastMessage = messages[messages.length - 1];
   const generatedBios ="text";
     // lastMessage?.role === "assistant" ? lastMessage.content : null;
@@ -91,6 +100,20 @@ export default function Page() {
           <div className="block">
             <DropDownMark mark={mark} setMark={(newMark) => setMark(newMark)} />
           </div>
+          <br />
+          <div className="flex mb-2 items-center space-x-3">
+            <p className="text-left font-medium">Discount Percentage</p>
+          </div>
+          <textarea
+            value={input}
+            onChange={handleInputChange}
+            rows={1}
+            className="w-full rounded-md border-gray-100 shadow-sm focus:border-black focus:ring-black my-5"
+            placeholder={
+              "please give your discount percentage or follow the recommendation"
+            }
+          />
+          <p className="text-left font-medium" id="recommended_discount_id"> </p>
 
           {!isLoading && (
             <button
