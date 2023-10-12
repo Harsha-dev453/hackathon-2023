@@ -1,11 +1,7 @@
 import { Configuration, OpenAIApi } from 'openai-edge';
 import { OpenAIStream, StreamingTextResponse } from "ai";
 
-// Create an OpenAI API client (that's edge friendly!)
 
-// const openai = new OpenAI({
-//   apiKey: "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", // defaults to process.env["OPENAI_API_KEY"]
-// });
 export type MarkType = "Email Marketing" | "Social Media Marketing" | "WebSite Marketing" | "SMS Marketing";
 const config = new Configuration({
   apiKey:process.env.OPENAI_API_KEY,
@@ -16,13 +12,9 @@ const openai = new OpenAIApi(config);
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  const {  bio, mark } = await req.json();
-  // console.log("vibe",vibe)
-  console.log("bio",bio)
-  console.log("mark",mark)
-
- 
-
+  const {  messages,mark} = await req.json();
+  
+const bio = messages[0]?.content;
   const context_gen = (mark:string) => {
     if(mark === "Email Marketing"){
       return "Email content body only with context to Storage industry for tenants to rent storage units";
@@ -37,7 +29,7 @@ export async function POST(req: Request) {
 
   const limit_lines = (mark:string) => {
     if(mark === "Email Marketing"){
-      return 125;
+      return 200;
     }
     else if(mark === "Social Media Marketing"){
       return 120;
@@ -58,8 +50,8 @@ function replacePlaceholders(template:any, data:any) {
  // Ask OpenAI for a streaming completion given the prompt
  let content = ``;
  if(mark === "Email Marketing"){
-  content = `Generate an email copy based on the following user input as context ${bio},
-  Ensure that the email copy doesn't exceed ${limit_lines(mark)} characters and that it focuses on content related to the storage industry. The email is targeted at potential tenants interested in renting storage units. Response format should be in the format subject:[], email_body:[], image_tag_line:[] with line breaks in between each of the key value pairs. No customer greetings like hello and hi  in email_body`
+  content = `Generate an email body only copy based on the following user input as context ${bio},
+  Ensure that the email copy doesn't exceed ${limit_lines(mark)} characters and that it focuses on content related to the storage industry. The email is targeted at potential tenants interested in renting storage units. Response should be only email body. No customer greetings like hello and hi  in email body`
   
  }
  if(mark === "Social Media Marketing"){

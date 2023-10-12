@@ -6,20 +6,23 @@ import {
   Button,
 } from "@material-tailwind/react";
 
-export default function EmailCopy({ content }: any) {
-  
-  const data:any = {};
-  
-  const regex = /^([\w\s]+):\s([\s\S]*?)(?=\n\w+:|$)/gm;
-  let match;
-  while ((match = regex.exec(content)) !== null) {
-    const key = match[1];
-    const value = match[2].trim();
-    data[key] = value;
-  }
-  
-  console.log(data);
-  console.log(content); 
+export default function EmailCopy({ content, coupon_data }: any) {
+  const data: any = {};
+
+  // Create a regular expression to match key-value pairs enclosed in square brackets
+  // const regex = /^([\w\s]+):\s([\s\S]*?)(?=\n\w+:|$)/gm;
+  // let match;
+
+  // while ((match = regex.exec(content)) !== null) {
+  //   const key = match[1];
+  //   const value = match[2];
+
+  //   data[key] = value.trim();
+  // }
+
+  // console.log(data);
+
+  //   console.log(content);
 
   return (
     //   <div className="relative flex w-96 flex-col rounded-xl bg-white bg-clip-border shadow-md">
@@ -49,8 +52,8 @@ export default function EmailCopy({ content }: any) {
     </header> */}
 
       <main className="mt-3">
-      <h2 className="text-gray-700 dark:text-gray-200">
-      [Subject]: {data.subject}
+        <h2 className="text-gray-700 dark:text-gray-200">
+          [Subject]: "Flat 50% off in Storage"
         </h2>
         <h2 className="text-gray-700 dark:text-gray-200">
           Hi [Customer Name],
@@ -63,27 +66,24 @@ export default function EmailCopy({ content }: any) {
           />
           <div className="absolute inset-0 bg-gray-500 opacity-40 rounded-md"></div>
           <div className="absolute inset-0 flex items-center justify-center">
-            <h2 className="text-white text-3xl font-bold">
-           {data.image_tag_line}
-            </h2>
+            <h2 className="text-white text-3xl font-bold">{coupon_data}</h2>
           </div>
         </div>
         <p className="mt-3 leading-loose text-gray-600 dark:text-gray-300">
-        {data.email_body}
-   
+          {content}
         </p>
         {/* <a href="#">
 
             <img className="w-auto h-7 sm:h-8" src="https://merakiui.com/images/full-logo.svg" alt=""/>
         </a> */}
-   
+
         <button className="px-6 py-2 mt-4 text-sm font-medium tracking-wider text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
           Visit Website
         </button>
 
         <p className="mt-8 text-gray-600 dark:text-gray-300">
           Thanks, <br />
-     The Continental Storage
+          The Continental Storage
         </p>
       </main>
 
@@ -99,7 +99,7 @@ export default function EmailCopy({ content }: any) {
         </p>
 
         <p className="mt-3 text-gray-500 dark:text-gray-400">
-          © {new Date().getFullYear()}  Storage
+          © {new Date().getFullYear()} Storage
         </p>
       </footer>
     </section>
