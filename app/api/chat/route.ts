@@ -52,17 +52,14 @@ function replacePlaceholders(template:any, data:any) {
  if(mark === "Email Marketing"){
   content = `Generate an email body only copy based on the following user input as context ${bio},
   Ensure that the email copy doesn't exceed ${limit_lines(mark)} characters and that it focuses on content related to the storage industry. The email is targeted at potential tenants interested in renting storage units. Response should be only email body. No customer greetings like hello and hi  in email body`
-  
  }
  if(mark === "Social Media Marketing"){
   content = `Generate an social media copy based on the following user input as context ${bio},
   Ensure that the  copy doesn't exceed ${limit_lines(mark)} characters and that it focuses on content related to the storage industry. The copy is targeted at potential tenants interested in renting storage units. Response format should be in the format give a catchy hashtag and some trendy hashtags.`
-  
  }
  if(mark === "SMS Marketing"){
-  content = `Generate an short messaging service copy based on the following user input as context ${bio},
+  content = `Generate a short messaging service copy based on the following user input as context ${bio},
   Ensure that the sms copy doesn't exceed ${limit_lines(mark)} characters and that it focuses on content related to the storage industry.`
-  
  }
 
  console.log(content)
