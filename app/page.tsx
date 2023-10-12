@@ -30,7 +30,7 @@ export default function Page() {
         return (
           <EmailCopy
             content={content}
-            coupon_data="Use Coupon code ST50 for 50% off"
+            coupon_data="Use Coupon code STOPT12 for 12% off"
           />
         );
 
