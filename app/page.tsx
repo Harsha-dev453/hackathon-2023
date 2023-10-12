@@ -15,7 +15,7 @@ import Sms from "../components/SmsCard";
 
 export default function Page() {
   const [bio, setBio] = useState("");
-  const [mark, setMark] = useState<MarkType>("Email Marketing");
+  const [mark, setMark] = useState<MarkType>("Email");
   const bioRef = useRef<null | HTMLDivElement>(null);
   const [discount, setDiscount] = useState(0);
 
@@ -26,7 +26,7 @@ export default function Page() {
   };
   function render_market_type(input: string, content: string) {
     switch (input) {
-      case "Email Marketing":
+      case "Email":
         return (
           <EmailCopy
             content={content}
@@ -34,13 +34,13 @@ export default function Page() {
           />
         );
 
-      case "Social Media Marketing":
+      case "Social Media":
         return <SocialMediaBlogCard content={content} />;
 
-      case "WebSite Marketing":
+      case "WebSite":
         return <FlyerAd content={content} />;
 
-      case "SMS Marketing":
+      case "SMS":
         return <Sms content={content} />;
 
       default:
@@ -124,7 +124,7 @@ setDiscount(Number(discount_input_ele));
         
         <div className="flex mb-5 items-center space-x-3">
             {/* <Image src="/2-black.png" width={30} height={30} alt="1 icon" /> */}
-            <p className="text-left font-bold"> Marketing Type</p>
+            <p className="text-left font-bold"> Marketing Medium</p>
           </div>
           <div className="block">
             <DropDownMark mark={mark} setMark={(newMark) => {setMark(newMark) } } />
@@ -182,7 +182,7 @@ setDiscount(Number(discount_input_ele));
           {generatedBios && render_market_type(mark, generatedBios)}
         </output>
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
