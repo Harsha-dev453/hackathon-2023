@@ -10,14 +10,14 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export type MarkType = "Offers" | "Promotion";
+export type MarkType = "Email Marketing" | "Social Media Marketing" | "WebSite Marketing" | "SMS Marketing";
 
 interface DropDownProps {
   mark: MarkType;
   setMark: (mark: MarkType) => void;
 }
 
-let vibes: MarkType[] = ["Offers", "Promotion"];
+let vibes: MarkType[] = ["Email Marketing", "Social Media Marketing","WebSite Marketing","SMS Marketing"];
 
 export default function DropDownMark({ mark, setMark }: DropDownProps) {
   return (

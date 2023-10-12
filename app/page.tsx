@@ -14,8 +14,7 @@ import Sms from "../components/SmsCard";
 
 export default function Page() {
   const [bio, setBio] = useState("");
-  const [vibe, setVibe] = useState<VibeType>("Professional");
-  const [mark, setMark] = useState<MarkType>("Offers");
+  const [mark, setMark] = useState<MarkType>("Email Marketing");
   const bioRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBios = () => {
@@ -23,11 +22,31 @@ export default function Page() {
       bioRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+  function render_market_type(input:string,content:string) {
+  
+    switch (input) {
+      case 'Email Marketing':
+        return <EmailCopy content={content} />;
+      
+      case 'Social Media Marketing':
+         return <SocialMediaBlogCard content={content} />;
+
+      case 'WebSite Marketing':
+        return <FlyerAd content={content} />; 
+
+      case 'SMS Marketing':
+         return <Sms content={content} />;
+     
+      default:
+        return <div>Error: Invalid Campaign</div>;
+    }
+  }
+  
+
 
   const { input, handleInputChange, handleSubmit, isLoading, messages } =
     useChat({
       body: {
-        vibe,
         bio,
         mark,
       },
@@ -37,6 +56,7 @@ export default function Page() {
     });
 
   const onSubmit = (e: any) => {
+    console.log("the",input)
     setBio(input);
     handleSubmit(e);
   };
@@ -51,29 +71,31 @@ export default function Page() {
 
   
   const lastMessage = messages[messages.length - 1];
-  const generatedBios ="text";
-    // lastMessage?.role === "assistant" ? lastMessage.content : null;
+  let generatedBios = lastMessage?.role === "assistant" ? lastMessage.content : null;
 
   return (
     <div>
-    <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
+    <div className="flex mx-auto flex-col items-center justify-center py-2">
       <Header />
-      <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-12 sm:mt-20">
+      <main className="flex flex-1 w-full flex-col items-center text-center px-4 mt-5 sm:mt-10">
         <h1 className="sm:text-6xl text-4xl max-w-[708px] font-bold text-slate-900">
           Generate your next Marketing Campaign
         </h1>
         {/* <p className="text-slate-500 mt-5">47,118 bios generated so far.</p> */}
         <form className="max-w-xl w-full" onSubmit={onSubmit}>
+        
+        <div className="flex mb-5 items-center space-x-3">
+            {/* <Image src="/2-black.png" width={30} height={30} alt="1 icon" /> */}
+            <p className="text-left font-bold"> Marketing Type</p>
+          </div>
+          <div className="block">
+            <DropDownMark mark={mark} setMark={(newMark) => {setMark(newMark) } } />
+          </div>
+       
           <div className="flex mt-10 items-center space-x-3">
-            {/* <Image
-              src="/1-black.png"
-              width={30}
-              height={30}
-              alt="1 icon"
-              className="mb-5 sm:mb-0"
-            /> */}
+          
             <p className="text-left font-medium">
-              Write few sentences about the marketing campaign .
+              Write few sentences to describe the content.
             </p>
           </div>
           <textarea
@@ -82,38 +104,11 @@ export default function Page() {
             rows={4}
             className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black my-5"
             placeholder={
-              "create a marketing campaign for reduced rents on your Unit"
+              "eg: Create a marketing campaign for reduced rents on your Unit"
             }
           />
-          <div className="flex mb-5 items-center space-x-3">
-            {/* <Image src="/2-black.png" width={30} height={30} alt="1 icon" /> */}
-            <p className="text-left font-medium">Select your Tone.</p>
-          </div>
-          <div className="block">
-            <DropDown vibe={vibe} setVibe={(newVibe) => setVibe(newVibe)} />
-          </div>
-          <br />
-          <div className="flex mb-5 items-center space-x-3">
-            {/* <Image src="/2-black.png" width={30} height={30} alt="1 icon" /> */}
-            <p className="text-left font-medium">Type</p>
-          </div>
-          <div className="block">
-            <DropDownMark mark={mark} setMark={(newMark) => setMark(newMark)} />
-          </div>
-          <br />
-          <div className="flex mb-2 items-center space-x-3">
-            <p className="text-left font-medium">Discount Percentage</p>
-          </div>
-          <textarea
-            value={input}
-            onChange={handleInputChange}
-            rows={1}
-            className="w-full rounded-md border-gray-100 shadow-sm focus:border-black focus:ring-black my-5"
-            placeholder={
-              "please give your discount percentage or follow the recommendation"
-            }
-          />
-          <p className="text-left font-medium" id="recommended_discount_id"> </p>
+      
+         
 
           {!isLoading && (
             <button
@@ -143,26 +138,19 @@ export default function Page() {
         />
         <hr className="h-px bg-gray-700 border-1 dark:bg-gray-700" />
 
-      
       </main>
-      
-      
     </div>
-    <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-12 sm:mt-20">
+    <main className="flex flex-1 w-full flex-col items-center justify-center px-4 mt-12 sm:mt-20">
     <output >
-          {true && (
-            <div className="grid grid-cols-2 gap-2 ">
-              <div> <EmailCopy content={generatedBios} title={"Email Copy"} /></div> 
-              <div> <Sms content={generatedBios} title={"SMS Copy"}/></div> 
-              <div>  <FlyerAd content={generatedBios} title={"Poster"}/></div> 
-              <div>  <SocialMediaBlogCard content={generatedBios} title={"Social Media Copy"}/></div> 
-              
-
-            </div>
-          )}
+    {generatedBios && (
+      render_market_type(mark,generatedBios)
+     
+    )}
         </output>
         </main>
-        <Footer />
+        {/* <Footer /> */}
     </div>
   );
 }
+
+

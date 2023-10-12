@@ -6,8 +6,9 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 // const openai = new OpenAI({
 //   apiKey: "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", // defaults to process.env["OPENAI_API_KEY"]
 // });
+export type MarkType = "Email Marketing" | "Social Media Marketing" | "WebSite Marketing" | "SMS Marketing";
 const config = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey:process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(config);
 
@@ -15,92 +16,36 @@ const openai = new OpenAIApi(config);
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  const { vibe, bio, mark } = await req.json();
-  const promotionalEmailTemplate = `
-  Subject Line: "Discover Our Secure Self-Storage Solutions!"
-  
-  Introduction:
-  Hello [Recipient's Name],
-  
-  At [Your Storage Company], we're excited to introduce you to our secure and convenient self-storage facilities. Whether you need to declutter your home, store business inventory, or protect your valuable belongings, we've got you covered.
-  
-  Body:
-  Our state-of-the-art storage units are designed to meet your storage needs. Here's why you'll love storing with us:
-  - [Feature 1]: Climate-controlled units for preserving your items.
-  - [Feature 2]: 24/7 surveillance and security for peace of mind.
-  - [Feature 3]: Flexible rental terms to fit your schedule.
-  
-  Don't miss out on the opportunity to make your life more organized and hassle-free. Reserve your storage unit today!
-  
-  [IMAGE]
-  
-  Call to Action:
-  Click below to explore our storage options and find the perfect unit for you:
-  [Button: Explore Units]
-  
-  Closing:
-  Best regards,
-  [Your Storage Company]
-  `;
-  
-  const offerEmailTemplate = `
-  Subject Line: "Exclusive Offer: Save [Discount]% on Your First Month's Rent!" \n
-  
-  Introduction:
-  Dear [Recipient's Name],
-  
-  We appreciate your interest in [Your Storage Company]. As a token of our gratitude, we're delighted to offer you an exclusive discount on your first month's rent.
-  
-  Body:
-  - [Discount]% Off Your First Month's Rent!
-  - Use Coupon Code: [Coupon Code]
-  
-  With our top-notch facilities and excellent customer service, you can trust us to provide a secure and hassle-free storage experience.
-  
-  [IMAGE]
-  
-  Call to Action:
-  Reserve your storage unit today and save [Discount]% on your first month's rent! Simply enter coupon code [Coupon Code] during checkout.
-  [Button: Reserve Now]
-  
-  Closing:
-  Sincerely,
-  [Your Storage Company]
-  `;
-  
-  const couponCodeEmailTemplate = `
-  Subject Line: "Unlock Savings: Use Coupon Code [Coupon Code] Today!"
-  
-  Introduction:
-  Hello [Recipient's Name],
-  
-  We're thrilled to share an exclusive offer with you. Use coupon code [Coupon Code] to enjoy incredible savings on your storage rental.
-  
-  Body:
-  - [Discount]% Off Your Rental
-  - Secure and Accessible Storage Units
-  - Convenient Locations
-  
-  [IMAGE]
-  
-  Call to Action:
-  Don't miss out on this opportunity! Click the button below to reserve your storage unit and apply the coupon code during checkout to unlock your savings.
-  [Button: Reserve Now]
-  
-  Closing:
-  Warm regards,
-  [Your Storage Company]
-  `;
+  const {  bio, mark } = await req.json();
+  // console.log("vibe",vibe)
+  console.log("bio",bio)
+  console.log("mark",mark)
 
-  // Define dynamic data for email
-  const dynamicData = {
-    Subject: "Introducing Our New Product!",
-    "Recipient's Name": "John Doe",
-    "Product Name": "Awesome Product",
-    "Product Description": "This amazing product will change your life.",
-    CTA: "Click here to learn more",
-   "Your Storage Company": "India's  Storage",
-  };
+ 
+
+  const context_gen = (mark:string) => {
+    if(mark === "Email Marketing"){
+      return "Email content body only with context to Storage industry for tenants to rent storage units";
+    }
+    else if(mark === "Social Media Marketing"){
+      return "Social Media post with context to Storage industry for tenants to rent storage units also generate a catchy hashtag, also some trendy hashtags";
+    }
+    else if(mark === "SMS Marketing"){
+      return "Create a SMS with context to Storage industry for tenants to rent storage units";
+    }
+  }
+
+  const limit_lines = (mark:string) => {
+    if(mark === "Email Marketing"){
+      return 125;
+    }
+    else if(mark === "Social Media Marketing"){
+      return 120;
+    }
+    else if(mark === "SMS Marketing"){
+      return 50;
+    }
+  }
   // Function to replace placeholders in the email template
 function replacePlaceholders(template:any, data:any) {
   for (const placeholder in data) {
@@ -109,20 +54,36 @@ function replacePlaceholders(template:any, data:any) {
   }
   return template;
 }
-  const emailWithDynamicData = replacePlaceholders(offerEmailTemplate, dynamicData);
+
  // Ask OpenAI for a streaming completion given the prompt
+ let content = ``;
+ if(mark === "Email Marketing"){
+  content = `Generate an email copy based on the following user input as context ${bio},
+  Ensure that the email copy doesn't exceed ${limit_lines(mark)} characters and that it focuses on content related to the storage industry. The email is targeted at potential tenants interested in renting storage units. Response format should be in the format subject:[], email_body:[], image_tag_line:[] with line breaks in between each of the key value pairs. No customer greetings like hello and hi  in email_body`
+  
+ }
+ if(mark === "Social Media Marketing"){
+  content = `Generate an social media copy based on the following user input as context ${bio},
+  Ensure that the  copy doesn't exceed ${limit_lines(mark)} characters and that it focuses on content related to the storage industry. The copy is targeted at potential tenants interested in renting storage units. Response format should be in the format give a catchy hashtag and some trendy hashtags.`
+  
+ }
+ if(mark === " SMS Marketing"){
+  content = `Generate an sms copy based on the following user input as context ${bio},
+  Ensure that the sms copy doesn't exceed ${limit_lines(mark)} characters and that it focuses on content related to the storage industry.`
+  
+ }
+
+ console.log(content)
  const response = await openai.createChatCompletion({
   model: 'gpt-3.5-turbo',
   stream: true,
   messages: [
     {
       role: 'user',
-      content: `Generate a  marketing copy based on ${bio}
-        Make sure each generated Campaign Copy is less than 10 words, good email campaign size, but should have good data and grammatically correct,  send html template after subject, body and footer also image position and closing characters base them on this context : ${emailWithDynamicData} `,
+      content: content,
     },
   ],
 });
-console.log(response)
 
   // Generate email content using OpenAI
 // function generateEmailContent(template) {
