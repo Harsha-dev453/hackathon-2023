@@ -11,6 +11,7 @@ import EmailCopy from "../components/Email";
 import FlyerAd from "../components/FlyerAd";
 import SocialMediaBlogCard from "../components/SocialMediaBlogCard";
 import Sms from "../components/SmsCard";
+// const { predict } = require('./discountGen/discountGen');
 
 export default function Page() {
   const [bio, setBio] = useState("");
@@ -60,12 +61,13 @@ export default function Page() {
     setBio(input);
     handleSubmit(e);
   };
+
   useEffect(() => {
     const ele = document.getElementById('recommended_discount_id');
     if (ele) {
       ele.innerHTML = "Recommended Discount %:";
     }
-  }, []);
+  }, [mark]);
 
   // async function getRecommendedDiscount(){}
 
@@ -108,6 +110,20 @@ export default function Page() {
             }
           />
       
+      <br />
+          <div className="flex mb-2 items-center space-x-3">
+            <p className="text-left font-medium">Discount Percentage</p>
+          </div>
+          <textarea
+            value={input}
+            onChange={handleInputChange}
+            rows={1}
+            className="w-full rounded-md border-gray-100 shadow-sm focus:border-black focus:ring-black my-5"
+            placeholder={
+              "please give your discount percentage or follow the recommendation"
+            }
+          />
+          <p className="text-left font-medium" id="recommended_discount_id"> </p>
          
 
           {!isLoading && (
