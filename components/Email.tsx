@@ -53,7 +53,7 @@ export default function EmailCopy({ content, coupon_data }: any) {
 
       <main className="mt-3">
         <h2 className="text-gray-700 dark:text-gray-200">
-          [Subject]: "Flat 50% off in Storage"
+          [Subject]: "Flat 12% off in Storage"
         </h2>
         <h2 className="text-gray-700 dark:text-gray-200">
           Hi [Customer Name],

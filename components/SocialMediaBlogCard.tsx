@@ -11,7 +11,7 @@ export default function SocialMediaBlogCard({content}:any) {
           <div className="absolute inset-0 bg-gray-500 opacity-40 rounded-md"></div>
           <div className="absolute inset-0 flex items-center justify-center">
             <h2 className="text-white text-3xl font-bold">
-             Flat 50% off
+             Flat 12% off
             </h2>
           </div>
       
@@ -51,7 +51,7 @@ export default function SocialMediaBlogCard({content}:any) {
           <div className="absolute inset-0 bg-gray-500 opacity-40 rounded-md"></div>
           <div className="absolute inset-0 flex items-center justify-center">
             <h2 className="text-white text-3xl font-bold">
-             Flat 50% off
+             Flat 12% off
             </h2>
           </div>
       
@@ -102,7 +102,7 @@ export default function SocialMediaBlogCard({content}:any) {
           <div className="absolute inset-0 bg-gray-500 opacity-40 rounded-md"></div>
           <div className="absolute inset-0 flex items-center justify-center">
             <h2 className="text-white text-3xl font-bold">
-             Flat 50% off
+             Flat 12% off
             </h2>
           </div>
       
